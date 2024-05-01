@@ -18,8 +18,6 @@ The ER diagram is color-coded to represent different components:
 
 This repository includes an SQLAlchemy script (`create_schema.py`) that facilitates the automatic creation of the described database structure in a PostgreSQL database.
 
-### Usage
-
 1. **Requirements**: Ensure you have Python installed on your system.
 2.  **Virtual Environment (Optional but Recommended)**: It's recommended to create a virtual environment to isolate the dependencies for this project. Run the following command to create a virtual environment named `venv`:
      ```bash
@@ -52,3 +50,45 @@ This repository includes an SQLAlchemy script (`create_schema.py`) that facilita
    ```
    
 This will connect to the PostgreSQL database and create the necessary tables and relationships based on the defined data model.
+
+## Key Entities and Attributes
+
+In the following, key entities and attributes of the proposed ER design are listed and explained.
+
+### DSOs
+The DSO entity is essential, as in this way different network characteristics and management decisions can be investigated. Further, it isn’t sufficient to model DSOs as an attribute of other entities, because this would limit the possibility to store DSO specific attributes, such as name, DSO supply area or reliability indices. 
+
+### Substations
+To model substation connections within the MV cable network, a substation entity is created with attributes such as DSO-id, voltage levels, installation date, station type, and coordinates. As shown in Figure 2, substation is a super-entity from which the sub-entities ”primary station” and ”secondary substation” are derived. In this way, all of the attributes of the substation entity are inherited, while specific attributes per sub-entity types can be stored as 
+well, such as the ”primary parent station” for the ”secondary substation”.
+
+### MV Cable Systems
+The ”MV cable systems” consists of the foreign keys: station-from-id and station-to-id, which can thereby link to both main or secondary substation and link to high-level attributes such as operating DSO. Beyond that, to align operational parameters and to ensure naming conventions, further attributes are introduced, such as operating voltage, average and max loading.
+
+### MV Cable Subsections
+The entity ”MV cable subsections” links via a foreign key to the ”MV cable systems” entity and thus reflects that the system is divided into one or more subsections. Moreover, a list of subsection-specific parameters
+is added, such as conductor material and type, number of conductors, insulation, manufacturer, in-service date, length, and coordinates. Tracking the connection to other subsections is also possible. Lastly, two boolean attributes are introduced that reflect if the MV section was installed due to a repair and if the section is still under operation.
+
+### MV Cable Joints
+MV subsections are connected via cable joints. These can represent a weakness in the cable system and present additional attributes such as joint type and location. They should thus be integrated into the data model as a separate entity.
+
+### Cable Failures & Repairs
+To model events that impact one specific MV cable subsection, such as failures and repairs a cable event entity is created. Via a foreign key it links to a the affected MV cable subsection and obtains date attributes, such as event start and event end. Next, the Sub-entities ”Cable Failures” and ”Cable repairs” can be created from the ”Cable Event” entity. The failures contain attributes such as failure type, cause and location whereas the repairs link to repair specifications and the related failure event.
+
+### External Events
+Despite events that always involve the cable, the data schmae also includes external events, such as digging activities and weather-based events, including lightning, heatwaves, cold waves, floods, etc., that might have an impact on the cable reliability prediction and thus need to be reflected in the database schema. Consequently, this study proposes the creation of an entity called ”external events,” from which all subsequent external event types inherit
+their start and end times. Due to different ways of storing geographical information, e.g. polygons for digging activities and point coordinates for lightning, th location attributes are saved on the sub-entity level. Furthermore, for each external event type, more specific attributes are added, such as utility and digging type for the digging activities or number of strokes and intensity for lightnings. 
+
+### Cable External Event Impacts
+One key requirement for predicting the reliability of MV cables is to query external events that have affected them. To reflect this, an entity ”Cable External Event Impacts” is created that links MV subsections to external events. The definition of a cable being affected by an event is then defined, given the location and time.
+
+### Location-Based Drivers
+Other static mini-world entities, such as roads, rails, water bodies, ground water level, etc., might also influence the reliable operation of the MV cables if they are in proximity. Because they are location-specific, they can be summarised in the entity of ”location-based drivers”. More attributes can be added on a sub-entity level, such as road, rail, or waterbody type. This study proposes to add environmental bbservation to the entity of location-based
+drivers. In this way, favourable or not favourable conditions with regard to environmental parameters such as temperature, humidity or precipitation can also be tracked and taken into account 
+
+### Cable Placement Conditions
+Within the ”Cable Placement Conditions” entity, the previously described location based drivers are spatially linked to the MV cable subsections. Consequently, this facilitates data retrieval of the location-specific placement conditions of the cables.
+
+
+
+
