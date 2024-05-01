@@ -89,6 +89,10 @@ drivers. In this way, favourable or not favourable conditions with regard to env
 ### Cable Placement Conditions
 Within the ”Cable Placement Conditions” entity, the previously described location based drivers are spatially linked to the MV cable subsections. Consequently, this facilitates data retrieval of the location-specific placement conditions of the cables.
 
+## Derived Attributes
+
+Many data requests related to reliability prediction of MV cables require aggregated information on either MV cable subsection, MV cable system, or at the cable failure level. Therefore the computation of derived attributes, such as number of subsections or joints per MV cable system can be beneficial for several reasons. First, the computation of derived attributes can be more efficient than doing the same computation externally. Further it can be expected that if the derived attributes are used in multiple queries or reports, computing them in SQL (Structured Query Language) can improve code re-usability and maintainability. Moreover, the derived attributes can help to maintain Data integrity, as a computation within the DBMS (Data Base Management System), can ensure that the computations are based directly on the source data. One use case for derived attributes is given by  the aggregation of information on the MV cable system level. For example the length of a MV cable system can be derived from the individual lengths of the respective subsections. Also in the context of cable events the formulation of derived attributes is feasible, taking into account external events as well as cable placement conditions. Therefore, features such as the number of digging activities affecting one cable system as well as the number of crossing roads of a cable system can be easily derived by using the provided data schema. It should also be emphasised that the presented model design allows the formulation of nested derived attributes, such as the number of failures at the main station level. 
+Further, the number of subsections or joints per MV cable system can be computed on the basis of the existing entity relations.
 
 
 
