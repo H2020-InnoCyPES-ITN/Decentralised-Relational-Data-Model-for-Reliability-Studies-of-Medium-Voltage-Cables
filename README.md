@@ -1,6 +1,6 @@
 # Decentralised-Relational-Data-Model-for-Reliability-Studies-of-Medium-Voltage-Cables
 
-In the context of reliability prediction of MV cables, there is an opportunity for Distribution System Operators (DSOs) to standardize data collection. This repository provides an Entity-Relationship (ER) data model created to facilitate this standardization. The ER data model ensures that all data adheres to specified formats and relationships, fulfilling a prerequisite for decentralized data storage.
+In the context of reliability prediction of MV cables, there is an opportunity for Distribution System Operators (DSOs) to standardise data collection. This repository provides an Entity-Relationship (ER) data model created to facilitate this standardisation. The ER data model ensures that all data adheres to specified formats and relationships, fulfilling a prerequisite for decentralized data storage.
 
 A simplified visualisation of the data schema is provided below: 
 
@@ -49,14 +49,14 @@ This repository includes an SQLAlchemy script (`create_schema.py`) that facilita
    python create_schema.py
    ```
    
-This will connect to the PostgreSQL database and create the necessary tables and relationships based on the defined data model.
+This will connect to the PostgreSQL database and create the necessary entities, attributes and relationships based on the defined data model.
 
 ## Key Entities and Attributes
 
 In the following, key entities and attributes of the proposed ER design are listed and explained.
 
 ### DSOs
-The DSO entity is essential, as in this way different network characteristics and management decisions can be investigated. Further, it isn’t sufficient to model DSOs as an attribute of other entities, because this would limit the possibility to store DSO specific attributes, such as name, DSO supply area or reliability indices. 
+The DSO entity is essential, it maps the Distribution System Operator (DSO) object into an entity, in this way different network characteristics and management decisions can be investigated. Further, it isn’t sufficient to model DSOs as an attribute of other entities, because this would limit the possibility to store DSO specific attributes, such as name, DSO supply area or reliability indices and others. 
 
 ### Substations
 To model substation connections within the MV cable network, a substation entity is created with attributes such as DSO-id, voltage levels, installation date, station type, and coordinates. As shown in Figure 2, substation is a super-entity from which the sub-entities ”primary station” and ”secondary substation” are derived. In this way, all of the attributes of the substation entity are inherited, while specific attributes per sub-entity types can be stored as 
