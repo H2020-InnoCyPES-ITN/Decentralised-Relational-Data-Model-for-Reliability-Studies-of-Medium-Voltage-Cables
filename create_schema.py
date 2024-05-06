@@ -12,15 +12,15 @@ from sqlalchemy.sql import text
 
 # Replace the following with your own details
 db_username = 'postgres'
-db_password = 'ESR9'
-db_host = 'localhost'  # or the IP address of your database server
-db_port = '5432'
-db_name = 'MyDB'
+db_password = '' #TODO: Insert your DB parameters here 
+db_host = ''  #TODO: Insert your DB parameters here 
+db_port = '' #TODO: Insert your DB parameters here 
+db_name = '' #TODO: Insert your DB parameters here 
 
 # Create the database engine
 engine = create_engine(f'postgresql+psycopg2://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}')
 # The name of the database you want to drop and create
-DATABASE_NAME = "MyDB"
+DATABASE_NAME = "" #TODO: Insert your DB parameters here 
 # Connect to the PostgreSQL server
 with engine.connect() as conn:
     conn.execution_options(isolation_level="AUTOCOMMIT")
